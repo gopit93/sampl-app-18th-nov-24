@@ -1,0 +1,23 @@
+name: CI/CD with Argo CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Argo CD Sync
+      uses: stefanprodan/argocd-action@v2.0.0
+      with:
+        apiUrl: ${{ secrets.ARGOCD_SERVER }}
+        authToken: ${{ secrets.ARGOCD_AUTH_TOKEN }}
+        app: sampl-app-18th-nov-24
+        sync: true
+        prune: true
