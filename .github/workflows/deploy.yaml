@@ -18,3 +18,4 @@ jobs:
           action: sync
           appName: "sampl-app-18th-nov-24"
           path: "k8s-manifests"
+          insecure: "true"
