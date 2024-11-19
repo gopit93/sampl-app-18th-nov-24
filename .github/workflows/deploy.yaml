@@ -1,21 +1,34 @@
-name: My Workflow
+name: Deploy Nginx with Argo CD
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout the code
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
+      # Step 2: Update Kubernetes Manifests with nginx:latest (Optional)
+      - name: Update Kubernetes Manifests
+        run: |
+          sed -i 's|image:.*|image: nginx:latest|g' k8s-manifests/deployment.yaml
+        shell: bash
+
+      # Step 3: Sync ArgoCD Application
       - name: Sync ArgoCD Application
         uses: omegion/argocd-actions@v1
         with:
-          address: "34.134.117.44"  # Corrected ArgoCD server URL
+          address: "34.134.117.44"         # Argo CD server URL
           token: ${{ secrets.ARGOCD_TOKEN }}  # Auth token stored as a GitHub secret
+          username: ${{ secrets.ARGOCD_USERNAME }}  # ArgoCD username stored as a GitHub secret
+          password: ${{ secrets.ARGOCD_PASSWORD }}  # ArgoCD password stored as a GitHub secret
           action: sync
-          appName: "sampl-app-18th-nov-24"
-          path: "k8s-manifests"
-          insecure: "true"
+          appName: "sampl-app-18th-nov-24"     # ArgoCD application name
+          path: "k8s-manifests"           # Path to your Kubernetes manifests
+          insecure: "true"                # Ignore TLS verification errors
