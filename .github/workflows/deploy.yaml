@@ -13,7 +13,7 @@ jobs:
       - name: Sync ArgoCD Application
         uses: omegion/argocd-actions@v1
         with:
-          address: "https://34.134.117.44"  # Corrected ArgoCD server URL
+          address: "34.134.117.44"  # Corrected ArgoCD server URL
           token: ${{ secrets.ARGOCD_TOKEN }}  # Auth token stored as a GitHub secret
           action: sync
           appName: "sampl-app-18th-nov-24"
