@@ -1,31 +1,14 @@
-name: CI/CD with Argo CD
-
-on:
-  push:
-    branches:
-      - main
-
+name: My Workflow
+on: [ push, pull_request ]
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-    # Step 1: Checkout the repository
-    - name: Checkout Code
-      uses: actions/checkout@v3
-
-    # Step 2: Login to Argo CD
-    - name: Login to Argo CD
-      uses: argoproj/argocd-login-action@v1.2.0
-      with:
-        username: ${{ secrets.ARGOCD_USERNAME }}
-        password: ${{ secrets.ARGOCD_PASSWORD }}
-        server: ${{ secrets.ARGOCD_SERVER }}
-
-    # Step 3: Sync the application
-    - name: Argo CD Sync
-      uses: argoproj/argocd-app-sync-action@v1.0.0
-      with:
-        app: sampl-app-18th-nov-24/k8s-manifests
-        prune: true
-        force: true
+      - uses: actions/checkout@v2
+      - name: Sync ArgoCD Application
+        uses: omegion/argocd-actions@v1
+        with:
+          address: "argocd.example.com"
+          token: ${{ secrets.ARGOCD_TOKEN }}
+          action: sync
+          appName: "sampl-app-18th-nov-24"
