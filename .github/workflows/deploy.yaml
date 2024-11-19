@@ -8,7 +8,7 @@ jobs:
       - name: Sync ArgoCD Application
         uses: omegion/argocd-actions@v1
         with:
-          address: "argocd.example.com"
+          address: "https://34.134.117.44/applications/"
           token: ${{ secrets.ARGOCD_TOKEN }}
           action: sync
           appName: "sampl-app-18th-nov-24"
