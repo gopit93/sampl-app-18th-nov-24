@@ -1,14 +1,20 @@
 name: My Workflow
-on: [ push, pull_request ]
+
+on: [push, pull_request]
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
       - name: Sync ArgoCD Application
         uses: omegion/argocd-actions@v1
         with:
-          address: "https://34.134.117.44"
-          token: ${{ secrets.ARGOCD_TOKEN }}
+          address: "https://34.134.117.44"  # Corrected ArgoCD server URL
+          token: ${{ secrets.ARGOCD_TOKEN }}  # Auth token stored as a GitHub secret
           action: sync
           appName: "sampl-app-18th-nov-24"
+          path: "k8s-manifests"
